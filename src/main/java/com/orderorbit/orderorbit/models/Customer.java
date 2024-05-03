@@ -21,15 +21,15 @@ public class Customer {
     @Column(name = "cus_id")
     private UUID cId;
 
-    @Column(name = "cus_name", nullable = false)
+    @Column(name = "cus_name")
     private String cName;
 
-    @Column(name = "cus_email", nullable = false, unique = true)
+    @Column(name = "cus_email")
     private String cEmail;
 
-    @Column(name = "cus_phone", nullable = false)
+    @Column(name = "cus_phone")
     private long cPhoneNum;
 
-    @Column(name = "cus_password", nullable = false)
+    @Column(name = "cus_password")
     private String cPassword;
 }
