@@ -21,7 +21,7 @@ public class Restaurant {
     @Column(name = "res_id")
     private UUID rId;
 
-    @Column(name = "res_name")
+    @Column(name = "res_name", nullable = false)
     private String rName;
 
     @Column(name = "res_email", nullable = false, unique = true)

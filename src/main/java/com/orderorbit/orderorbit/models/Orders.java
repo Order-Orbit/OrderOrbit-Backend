@@ -1,6 +1,6 @@
 package com.orderorbit.orderorbit.models;
 
-import java.util.List;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 import org.hibernate.annotations.GenericGenerator;
@@ -24,24 +24,27 @@ public class Orders {
     @Column(name = "ord_id")
     private UUID oId;
 
-    @Column(name = "cus_id")
+    @Column(name = "cus_id", nullable = false)
     private UUID cId;
 
-    @Column(name = "res_id")
+    @Column(name = "res_id", nullable = false)
     private UUID rId;
 
-    @Column(name = "ord_items")
+    @Column(name = "ord_items", nullable = false)
     private String oItems;
 
-    @Column(name = "ord_status")
+    @Column(name = "ord_status", nullable = false)
     private OrderStatus oStatus = OrderStatus.ONGOING;
 
-    @Column(name = "cus_email", nullable = false, unique = true)
-    private String cEmail;
+    @Column(name = "ord_datatime")
+    private LocalDateTime oDateTime;
 
-    @Column(name = "cus_phone", nullable = false)
-    private long cPhoneNum;
+    @Column(name = "ord_cost", nullable = false)
+    private long oCost;
 
-    @Column(name = "cus_password", nullable = false)
-    private String cPassword;
+    @Column(name = "res_name", nullable = false)
+    private String rName;
+
+    @Column(name = "cus_name", nullable = false)
+    private String cName;
 }
