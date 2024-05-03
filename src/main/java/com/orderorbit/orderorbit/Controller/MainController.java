@@ -5,7 +5,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.orderorbit.orderorbit.dto.LoginRequest;
@@ -23,7 +22,6 @@ import org.springframework.web.bind.annotation.RequestHeader;
 
 
 @RestController
-@ResponseBody
 @RequestMapping("api")
 @CrossOrigin(origins = "http://localhost:5173")
 public class MainController {
@@ -36,9 +34,8 @@ public class MainController {
     }
     
     @PostMapping("/resgisterCustomer")
-    public ResponseEntity<Customer> registerCus(@RequestBody Customer customer) {
-        System.out.println(customer);
-        return new ResponseEntity<Customer>(auth.registerCustomer(customer),HttpStatus.OK);
+    public ResponseEntity<String> registerCus(@RequestBody Customer customer) {
+        return new ResponseEntity<String>(auth.registerCustomer(customer),HttpStatus.OK);
     }
     
     @PostMapping("/resgisterRestaurant")

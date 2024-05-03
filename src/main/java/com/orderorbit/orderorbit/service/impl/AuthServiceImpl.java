@@ -33,28 +33,20 @@ public class AuthServiceImpl implements AuthService{
     }
 
     @Override
-    public Customer registerCustomer(Customer cust) {
-        // Customer customerdetails=customerRepository.findBycEmail(cust.getCEmail()).get();
+    public String registerCustomer(Customer cust) {
+        
         System.out.println(cust.getCEmail());
         if (customerRepository.existsBycEmail(cust.getCEmail())){
             throw new DuplicateResourceException("Customer Email", "cEmail", cust.getCEmail());
         }
-        // if(customerdetails!=null){
-        //     throw new DuplicateResourceException("Customer Email", "cEmail", cust.getCEmail());
-        // }
         else{
 
-            // Customer customer = new Customer();
-            // customer.setCPassword(hashPassword(cust.getCPassword()));
-            // customer.setCEmail(cust.getCEmail());
-            // customer.setCName(cust.getCName());
-            // customer.setCPhoneNum(cust.getCPhoneNum());
-            // return customerRepository.save(customer);
+            
             System.out.println(cust.getCPassword());
             cust.setCPassword(hashPassword(cust.getCPassword()));
-            return customerRepository.save(cust);   
+            customerRepository.save(cust);   
         }
-        // return "Customer Registration Successful!";
+        return "Customer Registration Successful!";
     }
 
     @Override
