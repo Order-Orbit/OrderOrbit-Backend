@@ -21,7 +21,7 @@ public class Customer {
     @Column(name = "cus_id")
     private UUID cId;
 
-    @Column(name = "cus_name")
+    @Column(name = "cus_name", nullable = false)
     private String cName;
 
     @Column(name = "cus_email", nullable = false, unique = true)
