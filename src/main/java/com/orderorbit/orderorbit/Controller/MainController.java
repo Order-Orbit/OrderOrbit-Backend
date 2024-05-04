@@ -1,6 +1,7 @@
 package com.orderorbit.orderorbit.controller;
 
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -11,17 +12,23 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.orderorbit.orderorbit.dto.LoginRequest;
 import com.orderorbit.orderorbit.dto.ResponseStatus;
+import com.orderorbit.orderorbit.dto.RestaurantFullInfo;
 import com.orderorbit.orderorbit.models.Customer;
 import com.orderorbit.orderorbit.models.Menu;
+import com.orderorbit.orderorbit.models.Orders;
 import com.orderorbit.orderorbit.models.Restaurant;
 import com.orderorbit.orderorbit.service.AuthService;
+import com.orderorbit.orderorbit.service.CustomerService;
 import com.orderorbit.orderorbit.service.RestaurantService;
 
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
-
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 
 
 
@@ -29,23 +36,27 @@ import org.springframework.web.bind.annotation.RequestHeader;
 @RestController
 @RequestMapping("api")
 public class MainController {
+
     @Autowired
     AuthService auth;
 
     @Autowired
     RestaurantService restaurantService;
+
+    @Autowired
+    CustomerService customerService;
     
 
     @GetMapping("/")
-    public ResponseEntity<String> getMethodName() {
+    public ResponseEntity<String> home() {
         return new ResponseEntity<String>("OrderOrbit Home API", HttpStatus.OK);
     }
     
 
     // Authentication and Authorization end-points
     @PostMapping("/resgisterCustomer")
-    public ResponseEntity<String> registerCus(@RequestBody Customer customer) {
-        return new ResponseEntity<String>(auth.registerCustomer(customer),HttpStatus.CREATED);
+    public ResponseEntity<Customer> registerCus(@RequestBody Customer customer) {
+        return new ResponseEntity<Customer>(auth.registerCustomer(customer),HttpStatus.CREATED);
     }
     
     @PostMapping("/resgisterRestaurant")
@@ -75,6 +86,37 @@ public class MainController {
         return new ResponseEntity<Menu>(restaurantService.addMenuItem(token, menu),HttpStatus.CREATED);
     }
 
+    @PutMapping("/updateMenuItem/{mItemId}")
+    public ResponseEntity<Menu> updateMItem(@PathVariable("mItemId") UUID mItemId, @RequestBody Menu menu, @RequestHeader String token) {
+        return new ResponseEntity<Menu>(restaurantService.updateMenuItem(mItemId, menu, token),HttpStatus.ACCEPTED);
+    }
+
+    @DeleteMapping("/deleteMenuItem/{mItemId}")
+    public ResponseEntity<String> deleteMItem(@PathVariable("mItemId") UUID mItemId,@RequestHeader String token) {
+        return new ResponseEntity<String>(restaurantService.deleteMenuItem(mItemId, token),HttpStatus.OK);
+    }
+
+    // Dashboard service end-points
+    
+
+    // Customer end-points
+    // API for Customer home page: to display all restaurants
+    @GetMapping("/getAllRestaurants")
+    public ResponseEntity<List<Restaurant>> getRestaurants(@RequestHeader String token) {
+        return new ResponseEntity<List<Restaurant>>(customerService.getAllRestaurants(token), HttpStatus.OK);
+    }
+
+    // API to send complete restaurants details with respective menu when clicked on particular restaurant from list of restaurants
+    @GetMapping("/getFullRestaurantInfo/{rId}")
+    public ResponseEntity<RestaurantFullInfo> getRestaurantInfo(@PathVariable("rId") UUID rId, @RequestHeader String token) {
+        return new ResponseEntity<RestaurantFullInfo>(customerService.getFullRestaurantInfo(rId, token),HttpStatus.OK);
+    }
+    
+    // API to place order by selecting required menu items by Customer
+    @PostMapping("/placeOrder/{rId}")
+    public ResponseEntity<Orders> placeOrders(@PathVariable("rId") UUID rId, @RequestHeader String token, @RequestBody Orders order) {
+        return new ResponseEntity<Orders>(customerService.placeOrder(rId, token, order),HttpStatus.CREATED);
+    }
     
     
 }
