@@ -1,0 +1,30 @@
+{
+    "customer": {
+        "creds": [
+            {
+                "cemail": "noor123@gmail.com",
+                "cname": "Noor Mulla",
+                "cpassword": "abc123",
+                "cphoneNum": 9880729564
+            }
+        ]
+    },
+    "restaurant": {
+        "creds": [
+            {
+                "rname":"A1 Chicken Biryani center",
+                "remail":"a1@gmail.com",
+                "rphoneNum": 9876545678,
+                "rpassword":"a1234",
+                "raddress":"Near ESI Hospital, Rajajinagar, Bangalore"
+            },
+            {
+                "rname":"Udupi Vaibhav",
+                "remail":"vaibhav@gmail.com",
+                "rphoneNum": 9876545564,
+                "rpassword":"udupi123",
+                "raddress":"Near ESI Hospital, Rajajinagar, Bangalore"
+            }
+        ]
+    }
+}

@@ -61,7 +61,7 @@ public class JwtTokenUtil {
                 .getSubject();
     }
 
-    public Role getRoleFromToken(String token) {
+    public String getRoleFromToken(String token) {
         byte[] keyBytes = Decoders.BASE64.decode(secret);
         SecretKey key = Keys.hmacShaKeyFor(keyBytes);
         Claims claims = Jwts.parserBuilder()
@@ -70,6 +70,6 @@ public class JwtTokenUtil {
                 .parseClaimsJws(token)
                 .getBody();
 
-        return (Role) claims.get("role");
+        return claims.get("role").toString();
     }
 }

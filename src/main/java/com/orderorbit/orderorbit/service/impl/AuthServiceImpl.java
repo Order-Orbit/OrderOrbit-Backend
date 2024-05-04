@@ -40,9 +40,6 @@ public class AuthServiceImpl implements AuthService{
             throw new DuplicateResourceException("Customer Email", "cEmail", cust.getCEmail());
         }
         else{
-
-            
-            System.out.println(cust.getCPassword());
             cust.setCPassword(hashPassword(cust.getCPassword()));
             customerRepository.save(cust);   
         }
@@ -50,19 +47,15 @@ public class AuthServiceImpl implements AuthService{
     }
 
     @Override
-    public String registerRestaurant(Restaurant rest) {
+    public Restaurant registerRestaurant(Restaurant rest) {
         if (restaurantRepository.existsByrEmail(rest.getREmail())){
             throw new DuplicateResourceException("Restaurant Email", "rEmail", rest.getREmail());
         }
         else{
-            try {
-                rest.setRPassword(hashPassword(rest.getRPassword()));
-                restaurantRepository.save(rest);   
-            } catch (Exception e) {
-                e.getStackTrace();
-            }
+            rest.setRPassword(hashPassword(rest.getRPassword()));
+            return restaurantRepository.save(rest);   
         }
-        return "Restaurant Registration Successful!";
+        // return "Restaurant Registration Successful!";
     }
 
     @Override
@@ -89,8 +82,24 @@ public class AuthServiceImpl implements AuthService{
 
     @Override
     public ResponseStatus loginRestaurant(LoginRequest request) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'loginRestaurant'");
+        if (restaurantRepository.existsByrEmail(request.getEmail())){
+            Restaurant retrivedRestaurant = restaurantRepository.findByrEmail(request.getEmail()).get();
+            ResponseStatus response = new ResponseStatus();
+            if (BCrypt.checkpw(request.getPassword(), retrivedRestaurant.getRPassword())){
+                String token = tokenObj.generateToken(request.getEmail(), Role.RESTAURANT);
+                response.setToken(token);
+                response.setMessage("Login Successful!");
+                return response;
+            }
+            else{
+                response.setMessage("Invalid password entered!!");
+                response.setToken(null);
+                return response;
+            }
+        }
+        else{
+            throw new ResourceNotFoundException("Restaurant Email", "rEmail", request.getEmail());
+        }
     }
     
 }

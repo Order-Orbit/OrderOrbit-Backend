@@ -7,7 +7,7 @@ import com.orderorbit.orderorbit.models.Restaurant;
 
 public interface AuthService {
     String registerCustomer(Customer cust);
-    String registerRestaurant(Restaurant rest);
+    Restaurant registerRestaurant(Restaurant rest);
 
     ResponseStatus loginCustomer(LoginRequest request);
     ResponseStatus loginRestaurant(LoginRequest request);
