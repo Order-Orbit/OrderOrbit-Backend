@@ -12,6 +12,5 @@ import java.util.List;
 public interface MenuRepository extends JpaRepository<Menu,UUID>{
     
     Optional<List<Menu>> findAllByrId(UUID rId);
-    // boolean existsByrId(UUID rId);
 
 }

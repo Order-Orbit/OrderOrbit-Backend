@@ -33,7 +33,7 @@ public class AuthServiceImpl implements AuthService{
     }
 
     @Override
-    public String registerCustomer(Customer cust) {
+    public Customer registerCustomer(Customer cust) {
         
         System.out.println(cust.getCEmail());
         if (customerRepository.existsBycEmail(cust.getCEmail())){
@@ -41,9 +41,8 @@ public class AuthServiceImpl implements AuthService{
         }
         else{
             cust.setCPassword(hashPassword(cust.getCPassword()));
-            customerRepository.save(cust);   
+            return customerRepository.save(cust);   
         }
-        return "Customer Registration Successful!";
     }
 
     @Override

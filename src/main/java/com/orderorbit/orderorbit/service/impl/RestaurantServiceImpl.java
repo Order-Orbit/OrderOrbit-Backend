@@ -1,6 +1,7 @@
 package com.orderorbit.orderorbit.service.impl;
 
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -59,6 +60,41 @@ public class RestaurantServiceImpl implements RestaurantService{
         else{
             throw new AuthorizationException("Access available only for Restaurants");
         }
+    }
+
+    @Override
+    public Menu updateMenuItem(UUID mItemId, Menu menu, String token) {
+        if(tokenObj.getRoleFromToken(token).equals(Role.RESTAURANT.toString())){
+            if (tokenObj.verifyToken(token)){
+                Menu newMenu = menuRepository.findById(mItemId).get();
+                newMenu.setMItemName(menu.getMItemName());
+                newMenu.setMItemPhoto(menu.getMItemPhoto());
+                newMenu.setMItemPrice(menu.getMItemPrice());
+                return menuRepository.save(newMenu);
+            }
+            else{
+                throw new AuthorizationException("Invalid token, Login again");
+            }
+        }
+        else{
+            throw new AuthorizationException("Access available only for Restaurants");
+        }   
+    }
+
+    @Override
+    public String deleteMenuItem(UUID mItemId, String token) {
+        if(tokenObj.getRoleFromToken(token).equals(Role.RESTAURANT.toString())){
+            if (tokenObj.verifyToken(token)){
+                menuRepository.deleteById(mItemId);
+                return String.format("Menu Item with Id: %s deleted successfully!",mItemId);
+            }
+            else{
+                throw new AuthorizationException("Invalid token, Login again");
+            }
+        }
+        else{
+            throw new AuthorizationException("Access available only for Restaurants");
+        }   
     }
     
 }

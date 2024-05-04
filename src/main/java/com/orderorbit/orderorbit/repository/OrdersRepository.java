@@ -11,10 +11,8 @@ import java.util.List;
 
 public interface OrdersRepository extends JpaRepository<Orders,UUID>{
     
-    Optional<List<Orders>> findBycId(UUID cId);
-    boolean existsBycId(UUID cId);
+    Optional<List<Orders>> findAllBycId(UUID cId);
 
-    Optional<List<Orders>> findByrId(UUID rId);
-    boolean existsByrId(UUID rId);
+    Optional<List<Orders>> findAllByrId(UUID rId);
 
 }
