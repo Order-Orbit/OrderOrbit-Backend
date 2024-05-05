@@ -102,10 +102,10 @@ public class MainController {
         return new ResponseEntity<List<Orders>>(restaurantService.allOrdersAtRestaurantDashboard(token), HttpStatus.OK);
     }
     
-    // @PutMapping("updateOStatusToCompleted/{oId}")
-    // public String putMethodName(@PathVariable("oId") UUID oId) {
-    //     return ;
-    // }
+    @PutMapping("updateOStatusToCompleted/{oId}")
+    public ResponseEntity<String> updateOStaus(@PathVariable("oId") UUID oId, @RequestHeader String token) {
+        return new ResponseEntity<String>(restaurantService.updateOStatusToCompl(oId, token),HttpStatus.ACCEPTED);
+    }
     
 
     // Customer end-points

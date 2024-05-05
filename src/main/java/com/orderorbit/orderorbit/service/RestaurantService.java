@@ -13,4 +13,5 @@ public interface RestaurantService {
     String deleteMenuItem(UUID mItemId, String token);
 
     List<Orders> allOrdersAtRestaurantDashboard(String token);
+    String updateOStatusToCompl(UUID oId, String token);
 }
