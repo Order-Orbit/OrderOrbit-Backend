@@ -11,4 +11,5 @@ public interface CustomerService {
     List<Restaurant> getAllRestaurants(String token);
     RestaurantFullInfo getFullRestaurantInfo(UUID rId, String token);
     Orders placeOrder(UUID rId, String token, Orders order);
+    List<Orders> allCustomerOrders(String token);
 }

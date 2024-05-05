@@ -1,7 +1,5 @@
 package com.orderorbit.orderorbit.utility;
 
-import java.security.Key;
-import java.util.Base64;
 
 import javax.crypto.SecretKey;
 // import javax.crypto.SecretKey;
