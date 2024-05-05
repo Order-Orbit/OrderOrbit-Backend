@@ -75,6 +75,17 @@ public class MainController {
     }
 
     // Restaurant end-points
+    // Restaurant profile endpoints
+    @GetMapping("/getRestaurantProfile")
+    public ResponseEntity<Restaurant> restInfo(@RequestHeader String token) {
+        return new ResponseEntity<Restaurant>(restaurantService.getRestaurantProfile(token),HttpStatus.OK);
+    }
+    
+    @PutMapping("/updateRestaurantProfile")
+    public ResponseEntity<Restaurant> updateRestInfo(@RequestHeader String token, @RequestBody Restaurant rest) {
+        return new ResponseEntity<Restaurant>(restaurantService.updateRestaurantProfile(token, rest),HttpStatus.CREATED);
+    }
+
     // Menu service end-points
     @GetMapping("/getAllMenuItems")
     public ResponseEntity<List<Menu>> getMenus(@RequestHeader String token) {
@@ -109,6 +120,17 @@ public class MainController {
     
 
     // Customer end-points
+    // Customer profile endpoints
+    @GetMapping("/getCustomerProfile")
+    public ResponseEntity<Customer> custInfo(@RequestHeader String token) {
+        return new ResponseEntity<Customer>(customerService.getCustomerProfile(token),HttpStatus.OK);
+    }
+    
+    @PutMapping("/updateCustomerProfile")
+    public ResponseEntity<Customer> updateCustInfo(@RequestHeader String token, @RequestBody Customer cust) {
+        return new ResponseEntity<Customer>(customerService.updateCustomerProfile(token, cust),HttpStatus.CREATED);
+    }
+
     // API for Customer home page: to display all restaurants
     @GetMapping("/getAllRestaurants")
     public ResponseEntity<List<Restaurant>> getRestaurants(@RequestHeader String token) {
@@ -132,7 +154,5 @@ public class MainController {
     public ResponseEntity<List<Orders>> ordersForMyOrders(@RequestHeader String token) {
         return new ResponseEntity<List<Orders>>(customerService.allCustomerOrders(token), HttpStatus.OK);
     }
-    
-    
     
 }

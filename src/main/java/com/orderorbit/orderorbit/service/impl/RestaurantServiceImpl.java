@@ -162,5 +162,41 @@ public class RestaurantServiceImpl implements RestaurantService{
             throw new AuthorizationException("Access available only for Restaurants");
         }
     }
+
+    @Override
+    public Restaurant getRestaurantProfile(String token) {
+        if(tokenObj.getRoleFromToken(token).equals(Role.RESTAURANT.toString())){
+            if (tokenObj.verifyToken(token)){
+                String rEmail = tokenObj.getEmailFromToken(token);
+                return restaurantRepository.findByrEmail(rEmail).get();
+            }
+            else{
+                throw new AuthorizationException("Invalid token, Login again");
+            }
+        }
+        else{
+            throw new AuthorizationException("Access available only for Restaurants");
+        }
+    }
+
+    @Override
+    public Restaurant updateRestaurantProfile(String token, Restaurant rest) {
+        if(tokenObj.getRoleFromToken(token).equals(Role.RESTAURANT.toString())){
+            if (tokenObj.verifyToken(token)){
+                String rEmail = tokenObj.getEmailFromToken(token);
+                Restaurant res = restaurantRepository.findByrEmail(rEmail).get();
+                res.setRName(rest.getRName());
+                res.setRPhoneNum(rest.getRPhoneNum());
+                res.setRAddress(rest.getRAddress());
+                return restaurantRepository.save(res);
+            }
+            else{
+                throw new AuthorizationException("Invalid token, Login again");
+            }
+        }
+        else{
+            throw new AuthorizationException("Access available only for Restaurants");
+        }
+    }
     
 }

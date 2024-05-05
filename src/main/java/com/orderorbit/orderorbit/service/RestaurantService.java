@@ -5,8 +5,12 @@ import java.util.UUID;
 
 import com.orderorbit.orderorbit.models.Menu;
 import com.orderorbit.orderorbit.models.Orders;
+import com.orderorbit.orderorbit.models.Restaurant;
 
 public interface RestaurantService {
+    Restaurant getRestaurantProfile(String token);
+    Restaurant updateRestaurantProfile(String token, Restaurant rest);
+
     Menu addMenuItem(String token, Menu menu);
     List<Menu> getMenus(String token);
     Menu updateMenuItem(UUID mItemId, Menu menu, String token);
