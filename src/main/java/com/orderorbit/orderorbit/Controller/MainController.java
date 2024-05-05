@@ -56,47 +56,56 @@ public class MainController {
     // Authentication and Authorization end-points
     @PostMapping("/resgisterCustomer")
     public ResponseEntity<Customer> registerCus(@RequestBody Customer customer) {
-        return new ResponseEntity<Customer>(auth.registerCustomer(customer),HttpStatus.CREATED);
+        return new ResponseEntity<Customer>(auth.registerCustomer(customer), HttpStatus.CREATED);
     }
     
     @PostMapping("/resgisterRestaurant")
     public ResponseEntity<Restaurant> registerRes(@RequestBody Restaurant restaurant) {
-        return new ResponseEntity<Restaurant>(auth.registerRestaurant(restaurant),HttpStatus.CREATED);
+        return new ResponseEntity<Restaurant>(auth.registerRestaurant(restaurant), HttpStatus.CREATED);
     }
 
     @PostMapping("/loginCustomer")
     public ResponseEntity<ResponseStatus> loginCus(@RequestBody LoginRequest request) {
-        return new ResponseEntity<ResponseStatus>(auth.loginCustomer(request),HttpStatus.ACCEPTED);
+        return new ResponseEntity<ResponseStatus>(auth.loginCustomer(request), HttpStatus.ACCEPTED);
     }
     
     @PostMapping("/loginRestaurant")
     public ResponseEntity<ResponseStatus> loginRes(@RequestBody LoginRequest request) {
-        return new ResponseEntity<ResponseStatus>(auth.loginRestaurant(request),HttpStatus.ACCEPTED);
+        return new ResponseEntity<ResponseStatus>(auth.loginRestaurant(request), HttpStatus.ACCEPTED);
     }
 
     // Restaurant end-points
     // Menu service end-points
     @GetMapping("/getAllMenuItems")
     public ResponseEntity<List<Menu>> getMenus(@RequestHeader String token) {
-        return new ResponseEntity<List<Menu>>(restaurantService.getMenus(token),HttpStatus.OK);
+        return new ResponseEntity<List<Menu>>(restaurantService.getMenus(token), HttpStatus.OK);
     }
     
     @PostMapping("/addMenuItem")
     public ResponseEntity<Menu> addMenuItem(@RequestHeader String token, @RequestBody Menu menu) {
-        return new ResponseEntity<Menu>(restaurantService.addMenuItem(token, menu),HttpStatus.CREATED);
+        return new ResponseEntity<Menu>(restaurantService.addMenuItem(token, menu), HttpStatus.CREATED);
     }
 
     @PutMapping("/updateMenuItem/{mItemId}")
     public ResponseEntity<Menu> updateMItem(@PathVariable("mItemId") UUID mItemId, @RequestBody Menu menu, @RequestHeader String token) {
-        return new ResponseEntity<Menu>(restaurantService.updateMenuItem(mItemId, menu, token),HttpStatus.ACCEPTED);
+        return new ResponseEntity<Menu>(restaurantService.updateMenuItem(mItemId, menu, token), HttpStatus.ACCEPTED);
     }
 
     @DeleteMapping("/deleteMenuItem/{mItemId}")
     public ResponseEntity<String> deleteMItem(@PathVariable("mItemId") UUID mItemId,@RequestHeader String token) {
-        return new ResponseEntity<String>(restaurantService.deleteMenuItem(mItemId, token),HttpStatus.OK);
+        return new ResponseEntity<String>(restaurantService.deleteMenuItem(mItemId, token), HttpStatus.OK);
     }
 
     // Dashboard service end-points
+    @GetMapping("/ordersAtRestaurantDashboard")
+    public ResponseEntity<List<Orders>> getOrdersByrId(@RequestHeader String token) {
+        return new ResponseEntity<List<Orders>>(restaurantService.allOrdersAtRestaurantDashboard(token), HttpStatus.OK);
+    }
+    
+    // @PutMapping("updateOStatusToCompleted/{oId}")
+    // public String putMethodName(@PathVariable("oId") UUID oId) {
+    //     return ;
+    // }
     
 
     // Customer end-points
@@ -109,14 +118,21 @@ public class MainController {
     // API to send complete restaurants details with respective menu when clicked on particular restaurant from list of restaurants
     @GetMapping("/getFullRestaurantInfo/{rId}")
     public ResponseEntity<RestaurantFullInfo> getRestaurantInfo(@PathVariable("rId") UUID rId, @RequestHeader String token) {
-        return new ResponseEntity<RestaurantFullInfo>(customerService.getFullRestaurantInfo(rId, token),HttpStatus.OK);
+        return new ResponseEntity<RestaurantFullInfo>(customerService.getFullRestaurantInfo(rId, token), HttpStatus.OK);
     }
     
     // API to place order by selecting required menu items by Customer
     @PostMapping("/placeOrder/{rId}")
     public ResponseEntity<Orders> placeOrders(@PathVariable("rId") UUID rId, @RequestHeader String token, @RequestBody Orders order) {
-        return new ResponseEntity<Orders>(customerService.placeOrder(rId, token, order),HttpStatus.CREATED);
+        return new ResponseEntity<Orders>(customerService.placeOrder(rId, token, order), HttpStatus.CREATED);
     }
+
+    // MyOrders service
+    @GetMapping("/allCustomerOrders")
+    public ResponseEntity<List<Orders>> ordersForMyOrders(@RequestHeader String token) {
+        return new ResponseEntity<List<Orders>>(customerService.allCustomerOrders(token), HttpStatus.OK);
+    }
+    
     
     
 }

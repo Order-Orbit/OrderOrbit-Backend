@@ -101,5 +101,22 @@ public class CustomerServiceImpl implements CustomerService{
             throw new AuthorizationException("Access available only for Customers");
         }
     }
+
+    @Override
+    public List<Orders> allCustomerOrders(String token) {
+        if(tokenObj.getRoleFromToken(token).equals(Role.CUSTOMER.toString())){
+            if (tokenObj.verifyToken(token)){
+                String cEmail = tokenObj.getEmailFromToken(token);
+                Customer cust = customerRepository.findBycEmail(cEmail).get();
+                return ordersRepository.findAllBycId(cust.getCId()).get();
+            }
+            else{
+                throw new AuthorizationException("Invalid token, Login again");
+            }
+        }
+        else{
+            throw new AuthorizationException("Access available only for Customers");
+        }   
+    }
     
 }
