@@ -9,6 +9,7 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
 import com.orderorbit.orderorbit.exception.AuthorizationException;
+import com.orderorbit.orderorbit.exception.ResourceNotFoundException;
 import com.orderorbit.orderorbit.models.Customer;
 import com.orderorbit.orderorbit.models.Menu;
 import com.orderorbit.orderorbit.models.Orders;
@@ -101,8 +102,13 @@ public class RestaurantServiceImpl implements RestaurantService{
     public String deleteMenuItem(UUID mItemId, String token) {
         if(tokenObj.getRoleFromToken(token).equals(Role.RESTAURANT.toString())){
             if (tokenObj.verifyToken(token)){
-                menuRepository.deleteById(mItemId);
-                return String.format("Menu Item with Id: %s deleted successfully!",mItemId);
+                if (menuRepository.existsById(mItemId)){
+                    menuRepository.deleteById(mItemId);
+                    return String.format("Menu Item with Id: %s deleted successfully!",mItemId);
+                }
+                else{
+                    throw new ResourceNotFoundException("ID", "mItemId", mItemId);
+                }
             }
             else{
                 throw new AuthorizationException("Invalid token, Login again");
