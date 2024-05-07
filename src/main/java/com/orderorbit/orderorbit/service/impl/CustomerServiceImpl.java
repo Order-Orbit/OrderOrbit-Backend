@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
+import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -39,6 +40,10 @@ public class CustomerServiceImpl implements CustomerService{
 
     @Autowired
     JwtTokenUtil tokenObj;
+
+    public String hashPassword(String password){
+        return BCrypt.hashpw(password, BCrypt.gensalt(10));
+    }
 
     @Override
     public List<Restaurant> getAllRestaurants(String token) {
@@ -143,6 +148,7 @@ public class CustomerServiceImpl implements CustomerService{
                 Customer cus = customerRepository.findBycEmail(cEmail).get();
                 cus.setCName(cust.getCName());
                 cus.setCPhoneNum(cust.getCPhoneNum());
+                cus.setCPassword(hashPassword(cust.getCPassword()));
                 return customerRepository.save(cus);
             }
             else{
