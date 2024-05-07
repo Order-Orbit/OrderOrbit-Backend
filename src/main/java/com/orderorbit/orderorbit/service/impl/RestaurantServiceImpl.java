@@ -3,6 +3,7 @@ package com.orderorbit.orderorbit.service.impl;
 import java.util.List;
 import java.util.UUID;
 
+import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -43,6 +44,10 @@ public class RestaurantServiceImpl implements RestaurantService{
 
     @Autowired
     OrdersRepository ordersRepository;
+
+    public String hashPassword(String password){
+        return BCrypt.hashpw(password, BCrypt.gensalt(10));
+    }
 
     @Override
     public Menu addMenuItem(String token, Menu menu) {
@@ -194,6 +199,7 @@ public class RestaurantServiceImpl implements RestaurantService{
                 res.setRName(rest.getRName());
                 res.setRPhoneNum(rest.getRPhoneNum());
                 res.setRAddress(rest.getRAddress());
+                res.setRPassword(hashPassword(rest.getRPassword()));
                 return restaurantRepository.save(res);
             }
             else{
