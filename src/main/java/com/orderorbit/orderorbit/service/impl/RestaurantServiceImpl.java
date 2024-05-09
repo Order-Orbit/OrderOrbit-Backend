@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.orderorbit.orderorbit.exception.AuthorizationException;
 import com.orderorbit.orderorbit.exception.ResourceNotFoundException;
@@ -20,6 +21,7 @@ import com.orderorbit.orderorbit.repository.MenuRepository;
 import com.orderorbit.orderorbit.repository.OrdersRepository;
 import com.orderorbit.orderorbit.repository.RestaurantRepository;
 import com.orderorbit.orderorbit.service.RestaurantService;
+import com.orderorbit.orderorbit.utility.AwsS3Util;
 import com.orderorbit.orderorbit.utility.JwtTokenUtil;
 import com.orderorbit.orderorbit.utility.OrderStatus;
 import com.orderorbit.orderorbit.utility.Role;
@@ -45,17 +47,30 @@ public class RestaurantServiceImpl implements RestaurantService{
     @Autowired
     OrdersRepository ordersRepository;
 
+    @Autowired
+    AwsS3Util awsS3UtilObj;
+
     public String hashPassword(String password){
         return BCrypt.hashpw(password, BCrypt.gensalt(10));
     }
 
     @Override
-    public Menu addMenuItem(String token, Menu menu) {
+    public Menu addMenuItem(String token, String mitemName, long mitemPrice, MultipartFile img) {
         if(tokenObj.getRoleFromToken(token).equals(Role.RESTAURANT.toString())){
             if (tokenObj.verifyToken(token)){
                 String reqEmail = tokenObj.getEmailFromToken(token);
                 Restaurant res = restaurantRepository.findByrEmail(reqEmail).get();
+                Menu menu = new Menu();
                 menu.setRId(res.getRId());
+                menu.setMItemName(mitemName);
+                menu.setMItemPrice(mitemPrice);
+                try {
+                    // AWS S3 code
+                    String url = awsS3UtilObj.uploadFileToS3(img);
+                    menu.setMItemPhoto(url);
+                } catch (Exception e) {
+                    System.out.println(e.getStackTrace());
+                }
                 return menuRepository.save(menu);
             }
             else{

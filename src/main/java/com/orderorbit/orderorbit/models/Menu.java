@@ -24,7 +24,7 @@ public class Menu {
     @Column(name = "res_id", nullable = false)
     private UUID rId;
 
-    @Column(name = "m_item_photo")
+    @Column(name = "m_item_photo", length = 500)
     private String mItemPhoto;
 
     @Column(name = "m_item_name", nullable = false)

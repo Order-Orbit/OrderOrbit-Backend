@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 // import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.orderorbit.orderorbit.dto.LoginRequest;
 import com.orderorbit.orderorbit.dto.ResponseStatus;
@@ -92,8 +93,8 @@ public class MainController {
     }
     
     @PostMapping("/addMenuItem")
-    public ResponseEntity<Menu> addMenuItem(@RequestHeader String token, @RequestBody Menu menu) {
-        return new ResponseEntity<Menu>(restaurantService.addMenuItem(token, menu), HttpStatus.CREATED);
+    public ResponseEntity<Menu> addMenuItem(@RequestHeader String token, @RequestHeader String mitemName, @RequestHeader long mitemPrice, @RequestBody MultipartFile img) {
+        return new ResponseEntity<Menu>(restaurantService.addMenuItem(token, mitemName, mitemPrice, img), HttpStatus.CREATED);
     }
 
     @PutMapping("/updateMenuItem/{mItemId}")
