@@ -65,5 +65,23 @@ public class AwsS3Util {
 
         return bucketUrl+"/"+fileName;
     }
+    public String deleteFileFromS3(String url){
+        if (url.equals(null)){
+            return null;
+        }
+        String[] urlParts = url.split("/");
+        String fileToDelete = urlParts[-1];
+        System.out.println(fileToDelete);
+        AmazonS3 amazonS3 = getAmazonS3Client();
+
+        try {
+            amazonS3.deleteObject(bucketName, fileToDelete);
+            return "delete success";
+        } catch (Exception e) {
+            return e.getStackTrace().toString();
+        }
+    }
+
+
 
 }
