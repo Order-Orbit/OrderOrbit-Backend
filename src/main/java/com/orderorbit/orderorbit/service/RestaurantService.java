@@ -15,7 +15,7 @@ public interface RestaurantService {
 
     Menu addMenuItem(String token, String mitemName, long mitemPrice, MultipartFile img);
     List<Menu> getMenus(String token);
-    Menu updateMenuItem(UUID mItemId, Menu menu, String token);
+    Menu updateMenuItem(UUID mItemId, MultipartFile img, String token, String mitemName, long mitemPrice);
     String deleteMenuItem(UUID mItemId, String token);
 
     List<Orders> allOrdersAtRestaurantDashboard(String token);

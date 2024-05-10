@@ -66,8 +66,7 @@ public class RestaurantServiceImpl implements RestaurantService{
                 menu.setMItemPrice(mitemPrice);
                 try {
                     // AWS S3 code
-                    String url = awsS3UtilObj.uploadFileToS3(img);
-                    menu.setMItemPhoto(url);
+                    menu.setMItemPhoto(awsS3UtilObj.uploadFileToS3(img));
                 } catch (Exception e) {
                     System.out.println(e.getStackTrace());
                 }
@@ -100,13 +99,26 @@ public class RestaurantServiceImpl implements RestaurantService{
     }
 
     @Override
-    public Menu updateMenuItem(UUID mItemId, Menu menu, String token) {
+    public Menu updateMenuItem(UUID mItemId, MultipartFile img, String token, String mitemName, long mitemPrice) {
         if(tokenObj.getRoleFromToken(token).equals(Role.RESTAURANT.toString())){
             if (tokenObj.verifyToken(token)){
                 Menu newMenu = menuRepository.findById(mItemId).get();
-                newMenu.setMItemName(menu.getMItemName());
-                newMenu.setMItemPhoto(menu.getMItemPhoto());
-                newMenu.setMItemPrice(menu.getMItemPrice());
+                newMenu.setMItemName(mitemName);
+                newMenu.setMItemPrice(mitemPrice);
+                try {
+                    String oldPhotoUrl = newMenu.getMItemPhoto();
+                    String newPhotoUrl = awsS3UtilObj.uploadFileToS3(img);
+                    if(newPhotoUrl.equals(null)){
+                        newMenu.setMItemPhoto(oldPhotoUrl);
+                    }
+                    else{
+                        newMenu.setMItemPhoto(newPhotoUrl);
+                        awsS3UtilObj.deleteFileFromS3(oldPhotoUrl);
+                    }
+                    
+                } catch (Exception e) {
+                    System.out.println(e.getStackTrace());
+                }
                 return menuRepository.save(newMenu);
             }
             else{

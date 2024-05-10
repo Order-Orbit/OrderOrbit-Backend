@@ -98,8 +98,8 @@ public class MainController {
     }
 
     @PutMapping("/updateMenuItem/{mItemId}")
-    public ResponseEntity<Menu> updateMItem(@PathVariable("mItemId") UUID mItemId, @RequestBody Menu menu, @RequestHeader String token) {
-        return new ResponseEntity<Menu>(restaurantService.updateMenuItem(mItemId, menu, token), HttpStatus.ACCEPTED);
+    public ResponseEntity<Menu> updateMItem(@PathVariable("mItemId") UUID mItemId, @RequestBody MultipartFile img, @RequestHeader String token, @RequestHeader String mitemName, @RequestHeader long mitemPrice) {
+        return new ResponseEntity<Menu>(restaurantService.updateMenuItem(mItemId, img, token, mitemName, mitemPrice), HttpStatus.ACCEPTED);
     }
 
     @DeleteMapping("/deleteMenuItem/{mItemId}")

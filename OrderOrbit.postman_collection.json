@@ -1,0 +1,634 @@
+{
+	"info": {
+		"_postman_id": "f7b30f56-97a7-450c-97bc-22d0bcd4cf23",
+		"name": "OrderOrbit",
+		"description": "[https://github.com/Order-Orbit/OrderOrbit-Backend](https://github.com/Order-Orbit/OrderOrbit-Backend)",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "31881906"
+	},
+	"item": [
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Registration",
+					"item": [
+						{
+							"name": "register customer",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"cemail\":\"echnicalme386@gmail.com\",\r\n    \"cname\":\"Abu Mulla\",\r\n    \"cpassword\":\"abu123\",\r\n    \"cphoneNum\":8686964173\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/api/resgisterCustomer",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"resgisterCustomer"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "resgister Restaurant",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"rname\":\"Udupi Vaibhav\",\r\n    \"remail\":\"vaibhav@gmail.com\",\r\n    \"rphoneNum\": 9876545564,\r\n    \"rpassword\":\"udupi123\",\r\n    \"raddress\":\"Near ESI Hospital, Rajajinagar, Bangalore\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/api/resgisterRestaurant",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"resgisterRestaurant"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Login",
+					"item": [
+						{
+							"name": "login customer",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"email\" : \"echnicalme386@gmail.com\",\r\n    \"password\" : \"abu123\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/api/loginCustomer",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"loginCustomer"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "login restaurant",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"email\":\"vaibhav@gmail.com\",\r\n    \"password\":\"udupi123\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/api/loginRestaurant",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"loginRestaurant"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Restaurant",
+			"item": [
+				{
+					"name": "Menu Service",
+					"item": [
+						{
+							"name": "Add menu item",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "token",
+										"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ2YWliaGF2QGdtYWlsLmNvbSIsInJvbGUiOiJSRVNUQVVSQU5UIn0.1KdoOc6CvaXcNtrZioMgE3ScKzgO6PWYIHXT486x9aw"
+									},
+									{
+										"key": "mitemName",
+										"value": "Idli"
+									},
+									{
+										"key": "mitemPrice",
+										"value": "20"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "img",
+											"type": "file",
+											"src": "postman-cloud:///1ef0dd8d-8b45-4a50-a530-a6d53a6bce18"
+										}
+									]
+								},
+								"url": {
+									"raw": "http://localhost:8080/api/addMenuItem",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"addMenuItem"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "get all menu items",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "token",
+										"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ2YWliaGF2QGdtYWlsLmNvbSIsInJvbGUiOiJSRVNUQVVSQU5UIn0.1KdoOc6CvaXcNtrZioMgE3ScKzgO6PWYIHXT486x9aw"
+									}
+								],
+								"url": {
+									"raw": "http://localhost:8080/api/getAllMenuItems",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"getAllMenuItems"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "update menu item",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "token",
+										"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ2YWliaGF2QGdtYWlsLmNvbSIsInJvbGUiOiJSRVNUQVVSQU5UIn0.1KdoOc6CvaXcNtrZioMgE3ScKzgO6PWYIHXT486x9aw"
+									},
+									{
+										"key": "mitemName",
+										"value": "Masala Dosa"
+									},
+									{
+										"key": "mitemPrice",
+										"value": "40"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "img",
+											"type": "file",
+											"src": "postman-cloud:///1ef0dff9-db96-4810-963f-b8c53a31c930"
+										}
+									]
+								},
+								"url": {
+									"raw": "http://localhost:8080/api/updateMenuItem/cbc0de6d-4563-4576-8ac0-83de914530d7",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"updateMenuItem",
+										"cbc0de6d-4563-4576-8ac0-83de914530d7"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "delete menu item",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "token",
+										"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ2YWliaGF2QGdtYWlsLmNvbSIsInJvbGUiOiJSRVNUQVVSQU5UIn0.1KdoOc6CvaXcNtrZioMgE3ScKzgO6PWYIHXT486x9aw"
+									}
+								],
+								"url": {
+									"raw": "http://localhost:8080/api/deleteMenuItem/3f2b1428-e253-4282-99d4-061961c1a12e",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"deleteMenuItem",
+										"3f2b1428-e253-4282-99d4-061961c1a12e"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Dashboard Service",
+					"item": [
+						{
+							"name": "Get Orders at Dashboard",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "token",
+										"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ2YWliaGF2QGdtYWlsLmNvbSIsInJvbGUiOiJSRVNUQVVSQU5UIn0.1KdoOc6CvaXcNtrZioMgE3ScKzgO6PWYIHXT486x9aw"
+									}
+								],
+								"url": {
+									"raw": "http://localhost:8080/api/ordersAtRestaurantDashboard",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"ordersAtRestaurantDashboard"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update orderStatus and email Customer",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "token",
+										"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ2YWliaGF2QGdtYWlsLmNvbSIsInJvbGUiOiJSRVNUQVVSQU5UIn0.1KdoOc6CvaXcNtrZioMgE3ScKzgO6PWYIHXT486x9aw"
+									}
+								],
+								"url": {
+									"raw": "http://localhost:8080/api/updateOStatusToCompleted/85a0d631-dc7a-4b46-9748-40ca3c49b559",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"updateOStatusToCompleted",
+										"85a0d631-dc7a-4b46-9748-40ca3c49b559"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Restaurant profile",
+					"item": [
+						{
+							"name": "Get Restaurant Profile",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "token",
+										"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ2YWliaGF2QGdtYWlsLmNvbSIsInJvbGUiOiJSRVNUQVVSQU5UIn0.1KdoOc6CvaXcNtrZioMgE3ScKzgO6PWYIHXT486x9aw"
+									}
+								],
+								"url": {
+									"raw": "http://localhost:8080/api/getRestaurantProfile",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"getRestaurantProfile"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update Restaurant Profile",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "token",
+										"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ2YWliaGF2QGdtYWlsLmNvbSIsInJvbGUiOiJSRVNUQVVSQU5UIn0.1KdoOc6CvaXcNtrZioMgE3ScKzgO6PWYIHXT486x9aw"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"rname\":\"Udupi Hotel\",\r\n    \"rphoneNum\": 9876545564,\r\n    \"raddress\":\"Rajajinagar, Bangalore\",\r\n    \"rpassword\": \"hotel123\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/api/updateRestaurantProfile",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"updateRestaurantProfile"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Customer",
+			"item": [
+				{
+					"name": "Customer's Ordering Service",
+					"item": [
+						{
+							"name": "get all restaurants",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "token",
+										"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZWNobmljYWxtZTM4NkBnbWFpbC5jb20iLCJyb2xlIjoiQ1VTVE9NRVIifQ.35QQ-bMhVCuBjor_m4NUmBY2zj2FcfU0Iwr-8Wmw_aM"
+									}
+								],
+								"url": {
+									"raw": "http://localhost:8080/api/getAllRestaurants",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"getAllRestaurants"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "get restaurant info with menu",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "token",
+										"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZWNobmljYWxtZTM4NkBnbWFpbC5jb20iLCJyb2xlIjoiQ1VTVE9NRVIifQ.35QQ-bMhVCuBjor_m4NUmBY2zj2FcfU0Iwr-8Wmw_aM"
+									}
+								],
+								"url": {
+									"raw": "http://localhost:8080/api/getFullRestaurantInfo/4a6a814a-ce5e-4cac-a2ba-46bb87f63d28",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"getFullRestaurantInfo",
+										"4a6a814a-ce5e-4cac-a2ba-46bb87f63d28"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Place Order",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "token",
+										"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZWNobmljYWxtZTM4NkBnbWFpbC5jb20iLCJyb2xlIjoiQ1VTVE9NRVIifQ.35QQ-bMhVCuBjor_m4NUmBY2zj2FcfU0Iwr-8Wmw_aM"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"oitems\":\"idli*1-ponna*2-chicken biryani*3\",\r\n    \"ocost\":\"165\"\r\n}\r\n// Order items in format \"item*quantity-item*quantity\"",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/api/placeOrder/4a6a814a-ce5e-4cac-a2ba-46bb87f63d28",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"placeOrder",
+										"4a6a814a-ce5e-4cac-a2ba-46bb87f63d28"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "My Orders",
+					"item": [
+						{
+							"name": "Get customer orders",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "token",
+										"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZWNobmljYWxtZTM4NkBnbWFpbC5jb20iLCJyb2xlIjoiQ1VTVE9NRVIifQ.35QQ-bMhVCuBjor_m4NUmBY2zj2FcfU0Iwr-8Wmw_aM"
+									}
+								],
+								"url": {
+									"raw": "http://localhost:8080/api/allCustomerOrders",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"allCustomerOrders"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Customer profile",
+					"item": [
+						{
+							"name": "get Customer Profile",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "token",
+										"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZWNobmljYWxtZTM4NkBnbWFpbC5jb20iLCJyb2xlIjoiQ1VTVE9NRVIifQ.35QQ-bMhVCuBjor_m4NUmBY2zj2FcfU0Iwr-8Wmw_aM"
+									}
+								],
+								"url": {
+									"raw": "http://localhost:8080/api/getCustomerProfile",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"getCustomerProfile"
+									],
+									"query": [
+										{
+											"key": "",
+											"value": null,
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update Customer profile",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "token",
+										"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZWNobmljYWxtZTM4NkBnbWFpbC5jb20iLCJyb2xlIjoiQ1VTVE9NRVIifQ.35QQ-bMhVCuBjor_m4NUmBY2zj2FcfU0Iwr-8Wmw_aM"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"cname\":\"Abubakar Mulla\",\r\n    \"cphoneNum\":8686974173,\r\n    \"cpassword\":\"mulla123\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/api/updateCustomerProfile",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"updateCustomerProfile"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "api home",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						""
+					],
+					"query": [
+						{
+							"key": "",
+							"value": "",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
