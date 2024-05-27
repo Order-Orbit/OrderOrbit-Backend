@@ -2,11 +2,14 @@ package com.orderorbit.orderorbit.service.impl;
 
 import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
 import com.orderorbit.orderorbit.dto.LoginRequest;
 import com.orderorbit.orderorbit.dto.ResponseStatus;
 import com.orderorbit.orderorbit.exception.DuplicateResourceException;
+import com.orderorbit.orderorbit.exception.InvalidDataException;
 import com.orderorbit.orderorbit.exception.ResourceNotFoundException;
 import com.orderorbit.orderorbit.models.Customer;
 import com.orderorbit.orderorbit.models.Restaurant;
@@ -21,6 +24,9 @@ public class AuthServiceImpl implements AuthService{
 
     @Autowired
     CustomerRepository customerRepository;
+
+    @Autowired
+    JavaMailSender javaMailSender;
 
     @Autowired
     RestaurantRepository restaurantRepository;
@@ -40,8 +46,19 @@ public class AuthServiceImpl implements AuthService{
             throw new DuplicateResourceException("Customer Email", "cEmail", cust.getCEmail());
         }
         else{
-            cust.setCPassword(hashPassword(cust.getCPassword()));
-            return customerRepository.save(cust);   
+            SimpleMailMessage message = new SimpleMailMessage();
+            message.setTo(cust.getCEmail());
+            message.setSubject(String.format("OrderOrbit: Welcome foodies!!"));
+
+            message.setText(String.format("Hi %s,\nThank you for registering with us, login and book some meals\n\nHope you enjoy our application.\nThank you for choosing us.\n\nWarm regards,\nOrder Orbit",cust.getCName()));
+            try {
+                javaMailSender.send(message);
+                cust.setCPassword(hashPassword(cust.getCPassword()));
+                return customerRepository.save(cust); 
+            } catch (Exception e) {
+                throw new InvalidDataException(String.format("email: %s",cust.getCEmail()));
+            }
+              
         }
     }
 
@@ -51,8 +68,19 @@ public class AuthServiceImpl implements AuthService{
             throw new DuplicateResourceException("Restaurant Email", "rEmail", rest.getREmail());
         }
         else{
-            rest.setRPassword(hashPassword(rest.getRPassword()));
-            return restaurantRepository.save(rest);   
+            SimpleMailMessage message = new SimpleMailMessage();
+            message.setTo(rest.getREmail());
+            message.setSubject(String.format("OrderOrbit: Welcome Food Makers!!"));
+
+            message.setText(String.format("Hi %s owner,\nThank you for registering with us, login and add your menu\n\nHope you enjoy our application.\nThank you for choosing us.\n\nWarm regards,\nOrder Orbit",rest.getRName()));
+            try {
+                javaMailSender.send(message);
+                rest.setRPassword(hashPassword(rest.getRPassword()));
+                return restaurantRepository.save(rest); 
+            } catch (Exception e) {
+                throw new InvalidDataException(String.format("email: %s",rest.getREmail()));
+            }
+              
         }
         // return "Restaurant Registration Successful!";
     }

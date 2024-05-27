@@ -176,12 +176,12 @@ public class RestaurantServiceImpl implements RestaurantService{
                 Customer cust = customerRepository.findById(order.getCId()).get();
                 String cEmail = cust.getCEmail();
                 String orderItems = order.getOItems();
-                String forderItems = String.join("\n", orderItems.split("-"));
+                String forderItems = String.join(" : ", String.join("\n", orderItems.split("-")).split("@"));
                 SimpleMailMessage message = new SimpleMailMessage();
                 message.setTo(cEmail);
                 message.setSubject(String.format("OrderOrbit: Your Order is ready!!"));
 
-                message.setText(String.format("Hi %s,\nWe know that you are waiting for a long, but no more waiting now!\n\nYour order with order Id: %s is ready now.\n\nYour order details:\n%s\nTotal payment done: %s\n\nHope you enjoy the food.\nThank you for choosing us.\n\nWarm regards,\n%s",cust.getCName(),order.getOId().toString(),forderItems,String.valueOf(order.getOCost()),order.getRName()));
+                message.setText(String.format("Hi %s,\nWe know that you are waiting for a long, but no more waiting now!\n\nYour order at %s with order Id: %s is ready now.\n\nYour order details:\n%s\nTotal payment done: %s\n\nHope you enjoy the food.\nThank you for choosing us.\n\nWarm regards,\n%s",cust.getCName(),order.getRName(),order.getOId().toString(),forderItems,String.valueOf(order.getOCost()),order.getRName()));
                 try {
                     javaMailSender.send(message);
                     order.setOStatus(OrderStatus.COMPLETED);
