@@ -70,7 +70,7 @@ public class AwsS3Util {
             return null;
         }
         String[] urlParts = url.split("/");
-        String fileToDelete = urlParts[-1];
+        String fileToDelete = urlParts[urlParts.length - 1];
         System.out.println(fileToDelete);
         AmazonS3 amazonS3 = getAmazonS3Client();
 
