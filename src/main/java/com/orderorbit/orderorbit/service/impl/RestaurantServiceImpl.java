@@ -10,6 +10,7 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.orderorbit.orderorbit.dto.MenuDto;
 import com.orderorbit.orderorbit.exception.AuthorizationException;
 import com.orderorbit.orderorbit.exception.ResourceNotFoundException;
 import com.orderorbit.orderorbit.models.Customer;
@@ -55,15 +56,16 @@ public class RestaurantServiceImpl implements RestaurantService {
     }
 
     @Override
-    public Menu addMenuItem(String token, String mitemName, long mitemPrice, MultipartFile img) {
+    public Menu addMenuItem(String token, MenuDto menuDto) {
         if (tokenObj.getRoleFromToken(token).equals(Role.RESTAURANT.toString())) {
             if (tokenObj.verifyToken(token)) {
                 String reqEmail = tokenObj.getEmailFromToken(token);
                 Restaurant res = restaurantRepository.findByrEmail(reqEmail).get();
                 Menu menu = new Menu();
                 menu.setRId(res.getRId());
-                menu.setMItemName(mitemName);
-                menu.setMItemPrice(mitemPrice);
+                menu.setMItemName(menuDto.getMItemName());
+                menu.setMItemPrice(menuDto.getMItemPrice());
+                MultipartFile img = menuDto.getImg();
                 if (img == null) {
                     menu.setMItemPhoto(null);
                 } else {
@@ -99,13 +101,14 @@ public class RestaurantServiceImpl implements RestaurantService {
     }
 
     @Override
-    public Menu updateMenuItem(UUID mItemId, MultipartFile img, String token, String mitemName, long mitemPrice) {
+    public Menu updateMenuItem(UUID mItemId, String token, MenuDto menuDto) {
         if (tokenObj.getRoleFromToken(token).equals(Role.RESTAURANT.toString())) {
             if (tokenObj.verifyToken(token)) {
                 if (menuRepository.existsById(mItemId)) {
                     Menu newMenu = menuRepository.findById(mItemId).get();
-                    newMenu.setMItemName(mitemName);
-                    newMenu.setMItemPrice(mitemPrice);
+                    newMenu.setMItemName(menuDto.getMItemName());
+                    newMenu.setMItemPrice(menuDto.getMItemPrice());
+                    MultipartFile img = menuDto.getImg();
                     if (img == null) {
                         newMenu.setMItemPhoto(newMenu.getMItemPhoto());
                     } else {
@@ -187,27 +190,33 @@ public class RestaurantServiceImpl implements RestaurantService {
             if (tokenObj.verifyToken(token)) {
                 if (ordersRepository.existsById(oId)) {
                     Orders order = ordersRepository.findById(oId).get();
-                    Customer cust = customerRepository.findById(order.getCId()).get();
-                    String cEmail = cust.getCEmail();
-                    String orderItems = order.getOItems();
-                    String forderItems = String.join(" : ", String.join("\n", orderItems.split("-")).split("@"));
-                    SimpleMailMessage message = new SimpleMailMessage();
-                    message.setTo(cEmail);
-                    message.setSubject(String.format("OrderOrbit: Your Order is ready!!"));
+                    if (order.getOStatus().toString().equals(OrderStatus.ONGOING.toString())) {
+                        Customer cust = customerRepository.findById(order.getCId()).get();
+                        String cEmail = cust.getCEmail();
+                        String orderItems = order.getOItems();
+                        String forderItems = String.join(" : ", String.join("\n", orderItems.split("-")).split("@"));
+                        SimpleMailMessage message = new SimpleMailMessage();
+                        message.setTo(cEmail);
+                        message.setSubject(String.format("OrderOrbit: Your Order is ready!!"));
 
-                    message.setText(String.format(
-                            "Hi %s,\nWe know that you are waiting for a long, but no more waiting now!\n\nYour order at %s with order Id: %s is ready now.\n\nYour order details:\n%s\nTotal payment done: %s\n\nHope you enjoy the food.\nThank you for choosing us.\n\nWarm regards,\n%s",
-                            cust.getCName(), order.getRName(), order.getOId().toString(), forderItems,
-                            String.valueOf(order.getOCost()), order.getRName()));
-                    try {
-                        javaMailSender.send(message);
-                        order.setOStatus(OrderStatus.COMPLETED);
-                        ordersRepository.save(order);
-                        return String.format("OrderStatus updated and mail notification sent to Customer with Id: %s",
-                                cust.getCId());
-                    } catch (Exception e) {
-                        return e.getStackTrace().toString();
+                        message.setText(String.format(
+                                "Hi %s,\nWe know that you are waiting for a long, but no more waiting now!\n\nYour order at %s with order Id: %s is ready now.\n\nYour order details:\n%s\nTotal payment done: %s\n\nHope you enjoy the food.\nThank you for choosing us.\n\nWarm regards,\n%s",
+                                cust.getCName(), order.getRName(), order.getOId().toString(), forderItems,
+                                String.valueOf(order.getOCost()), order.getRName()));
+                        try {
+                            javaMailSender.send(message);
+                            order.setOStatus(OrderStatus.COMPLETED);
+                            ordersRepository.save(order);
+                            return String.format(
+                                    "OrderStatus updated and mail notification sent to Customer with Id: %s",
+                                    cust.getCId());
+                        } catch (Exception e) {
+                            return e.getStackTrace().toString();
+                        }
+                    } else{
+                        return "Order Already Completed!!";
                     }
+
                 } else {
                     throw new ResourceNotFoundException("Order ID", "oId", oId);
                 }
